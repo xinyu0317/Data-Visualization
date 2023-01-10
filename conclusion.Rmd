@@ -1,0 +1,23 @@
+# Conclusion
+
+Key takeaways:
+
+The types of crimes that have the most counts in 2022 are larceny, assault, and fraud. 
+The frequency of cases in the second half of the year is more than that in the first half of the year, where September, October, and May have the most cases compared to any other month of the year 2022.
+Crimes occur relatively more frequently on weekends especially on Sunday.
+Typical hours that have the most crime cases are 12am, 12pm, 1am and 2am.
+The areas with the most crime cases in Ann Arbor are in the middle of the city, 42.25° N ~ 42.3° N, 83.56° W, 83.84° W.
+
+Limitations:
+Since we did not find updated dataset of 2022 in the second dataset, we analyze the crime cases in 2022 for the first one and 2019 for the second one, which prevents us from comparing our conclusions for the crime issues for the same year.
+We draw our conclusions based on the dataset in 2019 and 2022, while where these conclusions can be generalized to other years is still to be determined. 
+Some crimes that are not reported may not be analyzed in our project. 
+
+Further directions:
+For the question “which part of Ann Arbor is more dangerous,” we plan to use the heatmap next time to notice the sub-region of the city. 
+The data analysis in this project only discusses the crime cases in 2022. We can analyze more data in the past few years to check whether our findings can be generalized. 
+Conduct similar research to other nearby cities and analyze the safety level of the county or Michigan.
+
+Lessons learned:
+Cleveland dot plot seems to be more straightforward than barplot when the variables are in a great number and the names of the variables are relatively long. 
+Perceptually uniform color spaces are useful in determining the difference between the frequency of variables, since perceived differences are proportional to scalar differences. 
