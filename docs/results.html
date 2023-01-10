@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Results | Ann Arbor Crime Cases Analysis</title>
+  <meta name="description" content="Chapter 4 Results | Ann Arbor Crime Cases Analysis" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Results | Ann Arbor Crime Cases Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Results | Ann Arbor Crime Cases Analysis" />
+  
+  
+  
+
+<meta name="author" content="Yingjie Qu, Xinyu He, Zhihang Xia" />
+
+
+<meta name="date" content="2022-12-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data.html"/>
+<link rel="next" href="interactive-component.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/parallel-coordinates-2.1.8/parcoords.css" rel="stylesheet" />
+<script src="libs/parcoords-binding-1.0.1/parcoords.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">AnnArborCrimes</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="proposal.html"><a href="proposal.html"><i class="fa fa-check"></i><b>2</b> Proposal</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="proposal.html"><a href="proposal.html#research-topic"><i class="fa fa-check"></i><b>2.1</b> Research topic</a></li>
+<li class="chapter" data-level="2.2" data-path="proposal.html"><a href="proposal.html#data-availability"><i class="fa fa-check"></i><b>2.2</b> Data availability</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#sources"><i class="fa fa-check"></i><b>3.1</b> Sources</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="data.html"><a href="data.html#data-from-ann-arbor-police-department"><i class="fa fa-check"></i><b>3.1.1</b> Data from Ann Arbor Police department</a></li>
+<li class="chapter" data-level="3.1.2" data-path="data.html"><a href="data.html#data-from-fbi-ucr-program"><i class="fa fa-check"></i><b>3.1.2</b> Data from FBI UCR Program</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data.html"><a href="data.html#data-from-ann-arbor-police-department-1"><i class="fa fa-check"></i><b>3.2.1</b> Data from Ann Arbor Police department</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data.html"><a href="data.html#data-from-fbi-ucr-program-1"><i class="fa fa-check"></i><b>3.2.2</b> Data from FBI UCR Program</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#is-ann-arbor-a-relatively-dangerous-city-in-michigan"><i class="fa fa-check"></i><b>4.1</b> Is Ann Arbor a relatively dangerous city in Michigan?</a></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#what-type-of-crimes-happen-the-most"><i class="fa fa-check"></i><b>4.2</b> What type of crimes happen the most?</a></li>
+<li class="chapter" data-level="4.3" data-path="results.html"><a href="results.html#which-month-does-the-crime-cases-happen-the-most-frequently"><i class="fa fa-check"></i><b>4.3</b> Which month does the crime cases happen the most frequently?</a></li>
+<li class="chapter" data-level="4.4" data-path="results.html"><a href="results.html#what-day-do-the-crime-cases-happen-the-most-often"><i class="fa fa-check"></i><b>4.4</b> What day do the crime cases happen the most often?</a></li>
+<li class="chapter" data-level="4.5" data-path="results.html"><a href="results.html#in-what-time-of-a-day-do-the-cases-happen-more-often"><i class="fa fa-check"></i><b>4.5</b> In what time of a day do the cases happen more often?</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="results.html"><a href="results.html#time-series-plot-among-24-hours-of-a-day"><i class="fa fa-check"></i><b>4.5.1</b> Time Series Plot among 24 hours of a day</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="results.html"><a href="results.html#in-which-part-of-the-city-do-the-cases-happen-more-often"><i class="fa fa-check"></i><b>4.6</b> In which part of the city do the cases happen more often?</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="results.html"><a href="results.html#heatmap-for-different-locations-x-y-coordiantes"><i class="fa fa-check"></i><b>4.6.1</b> heatmap for different locations (x, y coordiantes)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="results.html"><a href="results.html#is-public-security-in-ann-arbor-getting-better-during-these-years"><i class="fa fa-check"></i><b>4.7</b> Is public security in Ann Arbor getting better during these years?</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
+<li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Ann Arbor Crime Cases Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="results" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Results<a href="results.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="is-ann-arbor-a-relatively-dangerous-city-in-michigan" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Is Ann Arbor a relatively dangerous city in Michigan?<a href="results.html#is-ann-arbor-a-relatively-dangerous-city-in-michigan" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>For the purpose of comparison with Ann Arbor, we care more about the public safety situation of big cities in Michigan.</p>
+<div class="parcoords html-widget" height="480" id="htmlwidget-43a95ab27c5714a7457a" style="width:800px;height:480px; position:relative; overflow-x:auto; overflow-y:hidden; max-width:100%;" width="800"></div>
+<script type="application/json" data-for="htmlwidget-43a95ab27c5714a7457a">{"x":{"data":{"names":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],"City":["Detroit","Grand Rapids","Warren","Sterling Heights","Ann Arbor","Lansing","Clinton Township","Flint","Dearborn","Livonia","Canton Township","Troy","Westland","Farmington Hills","Shelby Township","Kalamazoo","Wyoming","Rochester Hills","Southfield","Waterford Township"],"Population":[663502,201799,134653,133377,122893,118953,101308,95212,93902,93644,93406,84688,81444,81262,80806,76827,76295,75167,73335,73105],"Murder":[275,8,8,0,2,12,0,23,4,0,1,2,1,0,0,9,3,0,1,2],"Rape":[952,144,89,25,77,140,39,64,36,22,30,10,80,17,33,110,61,5,33,43],"Robbery":[2346,274,83,17,46,178,18,78,56,18,6,8,29,7,3,182,51,3,45,10],"Assult":[9467,860,468,125,184,983,241,1119,209,127,83,47,197,63,63,648,253,31,121,80],"Burglary":[6820,595,569,92,197,763,171,559,201,126,113,70,164,145,55,703,125,42,358,122],"Larceny_theft":[14844,2754,1540,952,1789,2225,1043,1220,1637,1173,919,918,904,547,371,2546,800,405,898,472],"Vehicle_theft":[6886,501,356,96,138,367,156,207,266,112,54,54,110,67,49,329,197,14,252,52],"Arson":[789,35,17,7,8,21,7,25,8,7,5,2,8,5,1,44,9,1,3,9]},"options":{"rownames":false,"brushMode":"1D-axes","brushPredicate":"AND","reorderable":true,"margin":{"top":50,"bottom":50,"left":100,"right":50},"alpha":0.5,"mode":"queue","bundlingStrength":0.5,"smoothness":0,"width":800},"autoresize":false,"tasks":null},"evals":[],"jsHooks":[]}</script>
+<p>Among the 20 cities with highest population, Detroit is the only outlier. We would like to explore in another way that if Ann Arbor has a higher crime rate.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Obviously, in terms of whichever, property crime rate or violent crime rate, the value of Ann Arbor is near the middle of the data.</p>
+<p>The two graphs above indicate that Ann Arbor is not an obviously dangerous (with large number or higher rate of crimes) city in Michigan.</p>
+</div>
+<div id="what-type-of-crimes-happen-the-most" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> What type of crimes happen the most?<a href="results.html#what-type-of-crimes-happen-the-most" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>As we can tell from the plot, property crime in Ann Arbor is much more common than violent crime. In 2019, the FBI reported a total of 2124 property crimes, compared with 309 violent crimes.</p>
+<p>The most common type of property crime in 2019 was larceny theft, followed by burglary and motor vehicle theft. Among violent crimes, aggravated assault was the most common type, followed by robbery, rape, and murder.</p>
+<p>The above plot used the data collected by FBI, and as a result, although the cases are clearly clarified into two main categories, but it does not include all detailed types of crimes. Let’s see a more detailed version, whose data is collected by local police department in Ann Arbor.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>It can be told that the types of crimes that have the most counts during the past 366 days are Larceny, Assault and FRAUD. In particular, Larceny has 1628 cases in total, Assault has 787 cases in total, and FRAUD has 533 cases in total. You should really be careful about your own items in Ann Arbor.</p>
+</div>
+<div id="which-month-does-the-crime-cases-happen-the-most-frequently" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Which month does the crime cases happen the most frequently?<a href="results.html#which-month-does-the-crime-cases-happen-the-most-frequently" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can first see the distribution of the number of crime incidents for the whole year in the following barplot.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>Both the barplot and the time series plot summarize the monthly number of crime cases in a chronological order. The time series plot gives a clearer and more straight-forward view of the change of numbers among different months. It can be told from the graph that September, October, and May have the most cases compared to any other month of year 2022. Number of cases reache the lowest in April. From the overview of the whole year, the frequency of cases in the second half of the year is more than that in the first half of the year.</p>
+</div>
+<div id="what-day-do-the-crime-cases-happen-the-most-often" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> What day do the crime cases happen the most often?<a href="results.html#what-day-do-the-crime-cases-happen-the-most-often" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We specifically take a look at the following three months that have the most cases of crimes for analysis: May, September, and October.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>According to time series plot:</p>
+<ol style="list-style-type: decimal">
+<li><p>in May, 05/01, 05/07, 05/10, 05/13, 05/19, 05/22, 05/25 have a relatively high occurrence of cases.</p></li>
+<li><p>in September, we can see the cases is relatively high on 09/04, 09/11, 09/17, 09/24, and 09/29, which reach the highest on 09/17.</p></li>
+<li><p>in October, we can see the cases is extremely high on 10/30, comparing to any other days in that month. 10/06, 10/09, 10/15, 10/22 have a relatively high occurrence of cases.</p></li>
+</ol>
+<p>When comparing the cases peeks among all the dates, we find that there is no fixed pattern for daily number of occurrence of crime cases. Although the highest number of occurrence among a month are not always on weekends, we notice that crimes occur relatively more frequently on weekends especially on Sunday.</p>
+</div>
+<div id="in-what-time-of-a-day-do-the-cases-happen-more-often" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> In what time of a day do the cases happen more often?<a href="results.html#in-what-time-of-a-day-do-the-cases-happen-more-often" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="time-series-plot-among-24-hours-of-a-day" class="section level3 hasAnchor" number="4.5.1">
+<h3><span class="header-section-number">4.5.1</span> Time Series Plot among 24 hours of a day<a href="results.html#time-series-plot-among-24-hours-of-a-day" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<pre><code>## # A tibble: 24 × 2
+##    hour  count
+##    &lt;chr&gt; &lt;int&gt;
+##  1 00      362
+##  2 01      294
+##  3 02      351
+##  4 03      271
+##  5 04      171
+##  6 05      127
+##  7 06       98
+##  8 07       88
+##  9 08      135
+## 10 09      182
+## # … with 14 more rows</code></pre>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>From the data of the past 366 days, we summarized the total number of cases at each hour during a day. It can be told from the graph that the typical hours that have the most crime cases are 12am, 12pm, 1am and 2am. The reasons behind would be that during late time at night, there are fewer people outside, thus it is more convenient for crimes to occur as there are fewer witnesses and people who can help and stop crimes.</p>
+<p>It is also noticeable that from 1pm to 7pm, cases are relatively fewer than those at peek times, but still are quite high.</p>
+</div>
+</div>
+<div id="in-which-part-of-the-city-do-the-cases-happen-more-often" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> In which part of the city do the cases happen more often?<a href="results.html#in-which-part-of-the-city-do-the-cases-happen-more-often" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="heatmap-for-different-locations-x-y-coordiantes" class="section level3 hasAnchor" number="4.6.1">
+<h3><span class="header-section-number">4.6.1</span> heatmap for different locations (x, y coordiantes)<a href="results.html#heatmap-for-different-locations-x-y-coordiantes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="results.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(crime<span class="sc">$</span>POINT_X)</span></code></pre></div>
+<pre><code>## [1] -83.01426</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="results.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(crime<span class="sc">$</span>POINT_X)</span></code></pre></div>
+<pre><code>## [1] -84.39088</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="results.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(crime<span class="sc">$</span>POINT_Y)</span></code></pre></div>
+<pre><code>## [1] 42.39456</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="results.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(crime<span class="sc">$</span>POINT_Y)</span></code></pre></div>
+<pre><code>## [1] 42.1513</code></pre>
+<p>consider point_x : -83 ~ -84.4
+-84.4 ~ -84.12;
+-84.12 ~ -83.84;
+-83.84 ~ -83.56;
+-83.56 ~ -83.28;
+-83.28 ~ -83;</p>
+<p>consider point_y: 42.15 ~ 42.40
+42.15 ~ 42.2;
+42.2 ~ 42.25;
+42.25 ~ 42.3;
+42.3 ~ 42.35;
+42.35 ~ 42.4;</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-35-1.png" width="672" />
+Comments:
+We set the ranges of point x and point y into 5 pieces each, and then calculated the total cases among each district. The shade of the blue from brightest to darkeet represents the variation of number of cases from high to low. It can be told from the graph that the areas with most crime cases are as follows: 42.25° N ~ 42.3° N, 83.56° W, 83.84° W. In those areas, the total number of cases during the past 366 days is 5451.</p>
+</div>
+</div>
+<div id="is-public-security-in-ann-arbor-getting-better-during-these-years" class="section level2 hasAnchor" number="4.7">
+<h2><span class="header-section-number">4.7</span> Is public security in Ann Arbor getting better during these years?<a href="results.html#is-public-security-in-ann-arbor-getting-better-during-these-years" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p>During the past 10 years between 2010 and 2019, Violent crime number and rate in Ann Arbor has an increasing trend while Property crime number and rate has a decreasing trend. Clearly, public safety does not change a lot in the past 10 years.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="interactive-component.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/qyingjie216/AnnArborCrimes/edit/main/results.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/qyingjie216/AnnArborCrimes/blob/main/results.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+# Interactive component
+
+<script src="https://d3js.org/d3.v7.js""></script>
+
+<div id = "plot"></div>
+<script>
+
+  const w = 600;
+  const h = 600;
+  const margin = {top: 25, right: 0, bottom: 25,
+      left: 25};
+  const innerWidth = w - margin.left - margin.right;
+  const innerHeight = h - margin.top - margin.bottom;
+
+
+  const bardata = [{month: "Jan", value: 421},
+                 {month: "Feb", value: 378},
+                 {month: "Mar", value: 414},
+                 {month: "Apr", value: 343},
+                 {month: "May", value: 493},
+                 {month: "Jun", value: 475},
+                 {month: "July", value: 474},
+                 {month: "Aug", value: 489},
+                 {month: "Sep", value: 538},
+                 {month: "Oct", value: 517},
+                 {month: "Nov", value: 487},
+                 {month: "Dec", value: 441}]
+
+  const xScale = d3.scaleBand()
+      .domain(bardata.map(d => d.month))
+      .range([0, innerWidth])
+      .paddingInner(.1);
+
+  const yScale = d3.scaleLinear()
+      .domain([0, d3.max(bardata.map(d => d.value))])
+      .range([innerHeight, 0])
+
+  const xAxis = d3.axisBottom()
+      .scale(xScale);
+
+  const yAxis = d3.axisLeft()
+      .scale(yScale);
+
+// add svg
+
+  const svg = d3.select("div#plot")
+    .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+
+// add background rectangle
+
+  svg.append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", w)
+      .attr("height", h)
+      .attr("fill", "aliceblue");
+
+// add bars as a group
+
+  const bars = svg.append("g")
+      .attr("id", "plot")
+      .attr("transform", `translate (${margin.left}, ${margin.top})`)
+    .selectAll("rect")
+      .data(bardata);
+
+  bars.enter().append("rect")
+      .attr("x", d => xScale(d.month))
+      .attr("y", d => yScale(d.value))
+      .attr("width", xScale.bandwidth())
+      .attr("height", d => innerHeight - yScale(d.value))
+      .attr("fill", "white");
+
+
+// add axes
+
+  svg.append("g")
+      .attr("class", "xAxis")
+      .attr("transform", `translate (${margin.left}, ${h - margin.bottom})`)
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "yAxis")
+      .attr("transform", `translate (${margin.left}, ${margin.top})`)
+      .call(yAxis);
+      
+    
+d3.select("div#plot").select("svg").select("g")
+      .selectAll("text")
+      .data(bardata)
+      .enter()
+      .append("text")
+      .attr("x", d => xScale(d.month) + 18)
+      .attr("y", d => yScale(d.value) + 25)
+      .text(d => d.value)
+      .attr("fill", "blue")
+      .attr("text-anchor", "middle");
+      
+
+d3.select("div#plot").select("svg").select("g")
+      .selectAll("rect")
+  .transition()
+  .duration(2000)
+  .attr("cx", "25")
+  .attr("fill", "lightblue");
+
+// add interactive transitioning
+d3.select("svg").select("g").selectAll("rect")
+  .on("click", function(event) {
+    d3.select(event.currentTarget)
+      .transition()
+  .duration(2000)
+  .attr("cy", "25")
+  .attr("fill", "lightgreen");
+   });
+      
+  
+
+</script>
+
+For the D3 project, I managed to visualize the barchart of the number of crime cases of each month in the year 2022. In particular, I added 12 columns to illustrate the number of cases in each month. On each column, I labeled the case numbers. The interaction and transitivity parts lie as follows: 
+
+When the web page is open, the colors of all columns slowly transform from white to light blue. When users click on any of the twelve columns, the column color will change from light blue to light green. 
+
+The findings are as follows: 
+The months that have the most cases in the year 2022 include September, October, and May. September has the largest number of crime cases: 538. October has 517 cases. May has 493 cases.

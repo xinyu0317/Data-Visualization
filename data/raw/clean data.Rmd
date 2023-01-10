@@ -1,0 +1,142 @@
+---
+title: "data clean"
+author: "Zhihang Xia; zx2338"
+date: "2022-12-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(GGally)
+library(parcoords)
+library(dplyr)
+library(cowplot)
+library(DataExplorer)
+```
+
+```{r}
+df2010 <- read.csv("michigan2015.csv", header=F)[,-c(6,14)]
+df2011 <- read.csv("michigan2016.csv", header=F)[,-c(6,14)]
+df2012 <- read.csv("michigan2017.csv", header=F)
+df2013 <- read.csv("michigan2018.csv", header=F)
+df2014 <- read.csv("michigan2019.csv", header=F)
+df2015 <- read.csv("michigan2015.csv", header=F)[,-c(6,14)]
+df2016 <- read.csv("michigan2016.csv", header=F)[,-c(6,14)]
+df2017 <- read.csv("michigan2017.csv", header=F)[6:427,]
+df2018 <- read.csv("michigan2018.csv", header=F)[6:422,]
+df2019 <- read.csv("michigan2019.csv", header=F)[6:429,]
+```
+
+```{r}
+colnames(df2019) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+df2019 <- df2019 %>% 
+  mutate_at(2:12, readr::parse_number) %>%
+  arrange(desc(Population)) %>%
+  mutate(Violent_crime_rate = as.numeric(0)) %>%
+  mutate(Property_crime_rate = as.numeric(0))
+
+for (i in 1:nrow(df2019)){
+  if (df2019[i,3] != 0){
+    df2019[i,13] = round(df2019[i,3]/df2019[i,2],4)
+    df2019[i,14] = round(df2019[i,8]/df2019[i,2],4)
+  }
+}
+```
+
+```{r}
+colnames(df2018) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+colnames(df2017) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+colnames(df2016) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+colnames(df2015) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+colnames(df2014) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+colnames(df2013) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+colnames(df2012) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+colnames(df2011) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+colnames(df2010) <- c("City","Population", "Violent_crime", "Murder", "Rape", "Robbery", "Assult", "Property_crime", "Burglary", "Larceny_theft", "Vehicle_theft", "Arson")
+```
+
+```{r}
+Ann2019 <- df2019 %>% filter(City == "Ann Arbor") %>% add_column(Year="2019")
+
+Ann2018 <- df2018 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2018")
+
+Ann2017 <- df2017 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2017")
+  
+Ann2016 <- df2016 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2016")
+  
+Ann2015 <- df2015 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2015")
+
+Ann2014 <- df2014 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2014")
+
+Ann2013 <- df2013 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2013")
+
+Ann2012 <- df2012 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2012")
+
+Ann2011 <- df2011 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2011")
+
+Ann2010 <- df2010 %>% 
+  filter(City == "Ann Arbor") %>% 
+  mutate_at(2:12, readr::parse_number) %>% 
+  mutate(Violent_crime_rate=round(Violent_crime/Population, 4)) %>%
+  mutate(Property_crime_rate=round(Property_crime/Population, 4)) %>%
+  add_column(Year="2010")
+
+dfAnn <- rbind(Ann2019, Ann2018, Ann2017, Ann2016, Ann2015, Ann2014, Ann2013, Ann2012, Ann2011, Ann2010)
+```
+
+```{r}
+dfAnn2019 <- df2019 %>%
+  filter(City == "Ann Arbor") %>%
+  select(!c(City, Population, Violent_crime, Property_crime, Violent_crime_rate, Property_crime_rate))
+dfAnn2019 <- data.frame(t(dfAnn2019))
+dfAnn2019 <- data.frame(names = row.names(dfAnn2019), dfAnn2019)
+rownames(dfAnn2019) <- NULL
+colnames(dfAnn2019) <- c("Crime_Type_2", "Crime_number")
+dfAnn2019 <- dfAnn2019 %>% add_column(Crime_Type_1=NA)
+dfAnn2019$Crime_Type_1 = c(rep("Violent_crime", 4), rep("Property_crime", 4))
+```

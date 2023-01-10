@@ -1,0 +1,431 @@
+# Results
+
+```{r}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(GGally)
+library(dplyr)
+library(cowplot)
+library(DataExplorer)
+library(stringr)
+library(parcoords)
+library(patchwork)
+```
+
+```{r}
+df2019 <- read.csv("data/clean/df2019.csv")
+dfAnn <- read.csv("data/clean/dfAnn.csv")
+dfAnn2019 <- read.csv("data/clean/dfAnn2019.csv")
+crime <- read.csv("data/clean/PartABCrimeOffenses.csv")
+```
+
+## Is Ann Arbor a relatively dangerous city in Michigan?
+
+For the purpose of comparison with Ann Arbor, we care more about the public safety situation of big cities in Michigan.
+
+```{r}
+df2019 %>%
+  select(!c(Violent_crime, Property_crime, Violent_crime_rate, Property_crime_rate)) %>%
+  slice(1:20) %>%
+  parcoords(
+    rownames = F   
+    , brushMode = "1D-axes"  
+    , reorderable = T  
+    , queue = T  
+    , alpha = .5
+    , width = 800
+    )
+```
+Among the 20 cities with highest population, Detroit is the only outlier. We would like to explore in another way that if Ann Arbor has a higher crime rate.
+
+```{r}
+ggplot(data=df2019%>%slice(1:20)%>%
+         arrange(desc(Violent_crime))) +
+  geom_point(aes(fct_reorder(City, Property_crime_rate), Property_crime_rate, color="Property crime rate"))+
+  geom_point(aes(fct_reorder(City, Property_crime_rate), Violent_crime_rate, color="Violent crime rate"))+
+  coord_flip()+
+  labs(x="City", y="Crime rate", title="Crime rates for different cities in Michigan", colour="Crime Type")+
+  theme_grey(16)
+```
+
+Obviously, in terms of whichever, property crime rate or violent crime rate, the value of Ann Arbor is near the middle of the data.
+
+The two graphs above indicate that Ann Arbor is not an obviously dangerous (with large number or higher rate of crimes) city in Michigan.
+
+## What type of crimes happen the most?
+```{r}
+ggplot(data=dfAnn2019)+
+  geom_bar(aes(x=fct_reorder(Crime_Type_2,Crime_number),y=Crime_number,fill=Crime_Type_1),stat="identity", position=position_dodge())+
+  coord_flip()+
+  scale_fill_manual(values=c("#E69F00", "#56B4E9"))+
+  labs(x="City", y="Crime rate", title="Different types of crime rates in Ann Arbor", fill="Crime Type")
+```
+
+As we can tell from the plot, property crime in Ann Arbor is much more common than violent crime. In 2019, the FBI reported a total of 2124 property crimes, compared with 309 violent crimes.
+
+The most common type of property crime in 2019 was larceny theft, followed by burglary and motor vehicle theft. Among violent crimes, aggravated assault was the most common type, followed by robbery, rape, and murder.
+
+The above plot used the data collected by FBI, and as a result, although the cases are clearly clarified into two main categories, but it does not include all detailed types of crimes. Let's see a more detailed version, whose data is collected by local police department in Ann Arbor.
+```{r}
+for (x in 1 : length(crime$CATEGORY)) {
+  if (grepl(' - ', crime$CATEGORY[x])) {
+    crime$CATEGORY[x] = str_split(toString(crime$CATEGORY[x]), ' - ')[[1]][1]
+  }
+  else if (grepl(' / ', crime$CATEGORY[x])) {
+    crime$CATEGORY[x] = str_split(toString(crime$CATEGORY[x]), ' / ')[[1]][1]
+  }
+}
+```
+
+```{r}
+categories <- group_by(crime, CATEGORY)
+categories_counts <- dplyr::summarise(categories,count = n())
+```
+
+```{r}
+categories_counts_ordered <- categories_counts[order(categories_counts$count, decreasing=TRUE),]
+```
+
+```{r}
+ggplot(categories_counts_ordered, aes(x = count, y = fct_reorder(CATEGORY,count))) +
+  geom_point()+
+  labs(y="Category", title="Number of different crime categories ")
+```
+
+It can be told that the types of crimes that have the most counts during the past 366 days are Larceny, Assault and FRAUD. In particular, Larceny has 1628 cases in total, Assault has 787 cases in total, and FRAUD has 533 cases in total. You should really be careful about your own items in Ann Arbor.
+
+
+## Which month does the crime cases happen the most frequently? 
+
+```{r}
+for (x in 1 : length(crime$DATE)) {
+    crime$date[x] = str_split(toString(crime$DATE[x]), ' ')[[1]][1]
+}
+for (x in 1 : length(crime$DATE)) {
+    crime$month[x] = str_split(toString(crime$DATE[x]), '-')[[1]][2]
+}
+```
+
+We can first see the distribution of the number of crime incidents for the whole year in the following barplot.
+
+```{r}
+ggplot(data = crime, aes(month)) +
+  geom_bar()+
+  labs(title="Number of crime cases in different months")
+```
+
+
+```{r}
+cases_monthly <- group_by(crime, month)
+cases_monthly_counts <- dplyr::summarise(cases_monthly,
+  count = n()
+)
+cases_monthly_counts_df = as.data.frame(cases_monthly_counts)
+
+```
+
+```{r}
+ggplot(cases_monthly_counts_df, aes(month, count))+ geom_line(color="black",group = 1) + geom_point() 
+```
+
+
+Both the barplot and the time series plot summarize the monthly number of crime cases in a chronological order. The time series plot gives a clearer and more straight-forward view of the change of numbers among different months. It can be told from the graph that September, October, and May have the most cases compared to any other month of year 2022. Number of cases reache the lowest in April. From the overview of the whole year, the frequency of cases in the second half of the year is  more than that in the first half of the year.
+
+
+## What day do the crime cases happen the most often? 
+
+We specifically take a look at the following three months that have the most cases of crimes for analysis: May, September, and October. 
+
+```{r}
+cases_september <- crime %>% filter(crime$month == '09')
+cases_september_daily <- group_by(cases_september, date)
+cases_september_daily_counts <- dplyr::summarise(cases_september_daily,
+  count = n()
+)
+cases_september_daily_counts_df = as.data.frame(cases_september_daily_counts)
+p_sep <- ggplot(cases_september_daily_counts_df, aes(date, count))+ geom_line(color="black",group = 1) + geom_point()  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r}
+cases_october <- crime %>% filter(crime$month == '10')
+cases_october_daily <- group_by(cases_october, date)
+cases_october_daily_counts <- dplyr::summarise(cases_october_daily,
+  count = n()
+)
+cases_october_daily_counts_df = as.data.frame(cases_october_daily_counts)
+p_oct <- ggplot(cases_october_daily_counts_df, aes(date, count))+ geom_line(color="black",group = 1) + geom_point()  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+```{r}
+cases_may <- crime %>% filter(crime$month == '05')
+cases_may_daily <- group_by(cases_may, date)
+cases_may_daily_counts <- dplyr::summarise(cases_may_daily,
+  count = n()
+)
+cases_may_daily_counts_df = as.data.frame(cases_may_daily_counts)
+p_may <- ggplot(cases_may_daily_counts_df, aes(date, count))+ geom_line(color="black",group = 1) + geom_point()  + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + labs(title="Number of crimes in defferent days of a month")
+```
+
+```{r}
+plot_grid(p_may,p_sep,p_oct,ncol=1)
+```
+
+According to time series plot:
+
+1. in May, 05/01, 05/07, 05/10, 05/13, 05/19, 05/22, 05/25 have a relatively high occurrence of cases.
+
+2. in September, we can see the cases is relatively high on 09/04, 09/11, 09/17, 09/24, and 09/29, which reach the highest on 09/17.
+
+3. in October, we can see the cases is extremely high on 10/30, comparing to any other days in that month. 10/06, 10/09, 10/15, 10/22 have a relatively high occurrence of cases.
+
+When comparing the cases peeks among all the dates, we find that there is no fixed pattern for daily number of occurrence of crime cases. Although the highest number of occurrence among a month are not always on weekends, we notice that crimes occur relatively more frequently on weekends especially on Sunday.
+
+## In what time of a day do the cases happen more often? 
+### Time Series Plot among 24 hours of a day
+
+```{r}
+for (x in 1 : length(crime$DATE)) {
+    time = str_split(toString(crime$DATE[x]), ' ')[[1]][2]
+    crime$hour[x] = str_split(toString(time), ':')[[1]][1]
+}
+```
+
+```{r}
+cases_hour <- group_by(crime, hour)
+cases_hour_counts <- dplyr::summarise(cases_hour,
+  count = n()
+)
+cases_hour_counts
+
+cases_hour_counts_df = as.data.frame(cases_hour_counts)
+ggplot(cases_hour_counts_df, aes(hour, count))+ geom_line(color="black",group = 1) + geom_point()
+```
+
+
+From the data of the past 366 days, we summarized the total number of cases at each hour during a day. It can be told from the graph that the typical hours that have the most crime cases are 12am, 12pm, 1am and 2am. The reasons behind would be that during late time at night, there are fewer people outside, thus it is more convenient for crimes to occur as there are fewer witnesses and people who can help and stop crimes. 
+
+It is also noticeable that from 1pm to 7pm, cases are relatively fewer than those at peek times, but still are quite high.
+
+## In which part of the city do the cases happen more often? 
+### heatmap for different locations (x, y coordiantes)
+
+```{r,echo = TRUE,message = FALSE,warning = FALSE}
+max(crime$POINT_X)
+min(crime$POINT_X)
+max(crime$POINT_Y)
+min(crime$POINT_Y)
+```
+
+consider point_x : -83 ~ -84.4 
+-84.4 ~ -84.12;
+-84.12 ~ -83.84;
+-83.84 ~ -83.56;
+-83.56 ~ -83.28;
+-83.28 ~ -83;
+
+consider point_y: 42.15 ~ 42.40
+42.15 ~ 42.2;
+42.2 ~ 42.25;
+42.25 ~ 42.3;
+42.3 ~ 42.35;
+42.35 ~ 42.4;
+
+```{r}
+x_r1 = 0
+x_r2 = 0
+x_r3 = 0
+x_r4 = 0
+x_r5 = 0
+y_r1 = 0
+y_r2 = 0
+y_r3 = 0
+y_r4 = 0
+y_r5 = 0
+
+for (x in 1 : length(crime)) {
+    if (crime$POINT_X[x] >= -84.4 && crime$POINT_X[x] < -84.12) {
+      x_r1 = x_r1 + 1
+    }
+  else if (crime$POINT_X[x] >= -84.12 && crime$POINT_X[x] < -83.84) {
+      x_r2 = x_r2 + 1
+  }
+  else if (crime$POINT_X[x] >= -83.84 && crime$POINT_X[x] < -83.56) {
+      x_r3 = x_r3 + 1
+  }
+  else if (crime$POINT_X[x] >= -83.56 && crime$POINT_X[x] < -83.28) {
+      x_r4 = x_r4 + 1
+  }
+  else {
+      x_r5 = x_r5 + 1
+    }
+}
+
+for (x in 1 : length(crime)) {
+    if (crime$POINT_Y[x] >= 42.15 && crime$POINT_Y[x] < 42.2) {
+      y_r1 = y_r1 + 1
+    }
+  else if (crime$POINT_Y[x] >= 42.2 && crime$POINT_Y[x] < 42.25) {
+      y_r2 = y_r2 + 1
+  }
+  else if (crime$POINT_Y[x] >= 42.25 && crime$POINT_Y[x] < 42.3) {
+      y_r3 = y_r3 + 1
+  }
+  else if (crime$POINT_Y[x] >= 42.3 && crime$POINT_Y[x] < 42.35) {
+      y_r4 = y_r4 + 1
+  }
+  else {
+      y_r5 = y_r5 + 1
+    }
+}
+```
+
+```{r}
+Point_x_range = c("x_r1", "x_r2", "x_r3", "x_r4", "x_r5", "x_r1", "x_r2", "x_r3", "x_r4", "x_r5", "x_r1", "x_r2", "x_r3", "x_r4", "x_r5", "x_r1", "x_r2", "x_r3", "x_r4", "x_r5", "x_r1", "x_r2", "x_r3", "x_r4", "x_r5")
+Point_y_range = c("y_r1", "y_r1", "y_r1", "y_r1", "y_r1", "y_r2", "y_r2", "y_r2", "y_r2", "y_r2", "y_r3", "y_r3", "y_r3", "y_r3", "y_r3", "y_r4", "y_r4", "y_r4", "y_r4", "y_r4", "y_r5", "y_r5", "y_r5", "y_r5", "y_r5")
+number = c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+df = data.frame(Point_x_range, Point_y_range, number)
+
+```
+
+```{r}
+
+for (x in 1 : length(crime$POINT_X)) {
+    if (crime$POINT_X[x] >= -84.4 && crime$POINT_X[x] < -84.12 && crime$POINT_Y[x] >= 42.15 && crime$POINT_Y[x] < 42.2) {
+      df$number[1]  = df$number[1] +1
+    }
+  else if (crime$POINT_X[x] >= -84.12 && crime$POINT_X[x] < -83.84 && crime$POINT_Y[x] >= 42.15 && crime$POINT_Y[x] < 42.2) {
+      df$number[2] = df$number[2] +1
+  }
+  else if (crime$POINT_X[x] >= -83.84 && crime$POINT_X[x] < -83.56 && crime$POINT_Y[x] >= 42.15 && crime$POINT_Y[x] < 42.2) {
+      df$number[3] = df$number[3] +1
+  }
+  else if (crime$POINT_X[x] >= -83.56 && crime$POINT_X[x] < -83.28 && crime$POINT_Y[x] >= 42.15 && crime$POINT_Y[x] < 42.2) {
+      df$number[4] = df$number[4] +1
+  }
+  else if (crime$POINT_X[x] >= -83.28 && crime$POINT_X[x] < -83 && crime$POINT_Y[x] >= 42.15 && crime$POINT_Y[x] < 42.2){
+      df$number[5] = df$number[5] +1
+  }
+  else if (crime$POINT_X[x] >= -84.4 && crime$POINT_X[x] < -84.12 && crime$POINT_Y[x] >= 42.2 && crime$POINT_Y[x] < 42.25) {
+      df$number[6] = df$number[6] +1
+  }
+  else if (crime$POINT_X[x] >= -84.12 && crime$POINT_X[x] < -83.84 && crime$POINT_Y[x] >= 42.2 && crime$POINT_Y[x] < 42.25) {
+      df$number[7] = df$number[7] +1
+  }
+  else if (crime$POINT_X[x] >= -83.84 && crime$POINT_X[x] < -83.56 && crime$POINT_Y[x] >= 42.2 && crime$POINT_Y[x] < 42.25) {
+      df$number[8] = df$number[8] +1
+  }
+  else if (crime$POINT_X[x] >= -83.56 && crime$POINT_X[x] < -83.28 && crime$POINT_Y[x] >= 42.2 && crime$POINT_Y[x] < 42.25) {
+      df$number[9] = df$number[9] +1
+  }
+  else if (crime$POINT_X[x] >= -83.28 && crime$POINT_X[x] < -83 && crime$POINT_Y[x] >= 42.2 && crime$POINT_Y[x] < 42.25) {
+      df$number[10] = df$number[10] +1
+  }
+  else if (crime$POINT_X[x] >= -84.4 && crime$POINT_X[x] < -84.12 && crime$POINT_Y[x] >= 42.25 && crime$POINT_Y[x] < 42.3) {
+      df$number[11] = df$number[11] +1
+  }
+  else if (crime$POINT_X[x] >= -84.12 && crime$POINT_X[x] < -83.84 && crime$POINT_Y[x] >= 42.25 && crime$POINT_Y[x] < 42.3) {
+      df$number[12] = df$number[12] +1
+  }
+  else if (crime$POINT_X[x] >= -83.84 && crime$POINT_X[x] < -83.56 && crime$POINT_Y[x] >= 42.25 && crime$POINT_Y[x] < 42.3) {
+      df$number[13] = df$number[13] +1
+  }
+  else if (crime$POINT_X[x] >= -83.56 && crime$POINT_X[x] < -83.28 && crime$POINT_Y[x] >= 42.25 && crime$POINT_Y[x] < 42.3) {
+      df$number[14] = df$number[14] +1
+  }
+  else if (crime$POINT_X[x] >= -83.28 && crime$POINT_X[x] < -83 && crime$POINT_Y[x] >= 42.25 && crime$POINT_Y[x] < 42.3) {
+      df$number[15] = df$number[15] +1
+  }
+  else if (crime$POINT_X[x] >= -84.4 && crime$POINT_X[x] < -84.12 && crime$POINT_Y[x] >= 42.3 && crime$POINT_Y[x] < 42.35) {
+      df$number[16] = df$number[16] +1
+  }
+  else if (crime$POINT_X[x] >= -84.12 && crime$POINT_X[x] < -83.84 && crime$POINT_Y[x] >= 42.3 && crime$POINT_Y[x] < 42.35) {
+      df$number[17] = df$number[17] +1
+  }
+  else if (crime$POINT_X[x] >= -83.84 && crime$POINT_X[x] < -83.56 && crime$POINT_Y[x] >= 42.3 && crime$POINT_Y[x] < 42.35) {
+      df$number[18] = df$number[18] +1
+  }
+  else if (crime$POINT_X[x] >= -83.56 && crime$POINT_X[x] < -83.28 && crime$POINT_Y[x] >= 42.3 && crime$POINT_Y[x] < 42.35) {
+      df$number[19] = df$number[19] +1
+  }
+  else if (crime$POINT_X[x] >= -83.28 && crime$POINT_X[x] < -83 && crime$POINT_Y[x] >= 42.3 && crime$POINT_Y[x] < 42.35) {
+      df$number[20] = df$number[20] +1
+  }
+  else if (crime$POINT_X[x] >= -84.4 && crime$POINT_X[x] < -84.12 && crime$POINT_Y[x] >= 42.35 && crime$POINT_Y[x] < 42.4) {
+      df$number[21] = df$number[21] +1
+  }
+  else if (crime$POINT_X[x] >= -84.12 && crime$POINT_X[x] < -83.84 && crime$POINT_Y[x] >= 42.35 && crime$POINT_Y[x] < 42.4) {
+      df$number[22] = df$number[22] +1
+  }
+  else if (crime$POINT_X[x] >= -83.84 && crime$POINT_X[x] < -83.56 && crime$POINT_Y[x] >= 42.35 && crime$POINT_Y[x] < 42.4) {
+      df$number[23] = df$number[23] +1
+  }
+  else if (crime$POINT_X[x] >= -83.56 && crime$POINT_X[x] < -83.28 && crime$POINT_Y[x] >= 42.35 && crime$POINT_Y[x] < 42.4) {
+      df$number[24] = df$number[24] +1
+  }
+  else  {
+      df$number[25] = df$number[25] +1
+  }
+}
+```
+
+
+```{r}
+for (x in 1: length(df$number)) {
+  if (df$number[x] != 0) {
+    df$number[x] = log(df$number[x])
+  }
+}
+```
+
+
+```{r}
+ggplot(df, aes(Point_x_range, Point_y_range, fill= number)) + 
+  geom_tile()
+```
+Comments: 
+We set the ranges of point x and point y into 5 pieces each, and then calculated the total cases among each district. The shade of the blue from brightest to darkeet represents the variation of number of cases from high to low. It can be told from the graph that the areas with most crime cases are as follows: 42.25° N ~ 42.3° N, 83.56° W, 83.84° W. In those areas, the total number of cases during the past 366 days is 5451.
+
+
+##  Is public security in Ann Arbor getting better during these years?
+
+```{r}
+p1 <- ggplot(dfAnn, aes(x=as.factor(Year), y=Violent_crime))+
+  geom_point()+
+  geom_line(group=1)+
+  labs(x="", y="Violent crime", title="")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+
+p2 <- ggplot(dfAnn, aes(x=as.factor(Year), y=Property_crime))+
+  geom_point()+
+  geom_line(group=1)+
+  labs(x="", y="Property crime", title="")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+
+p3 <- ggplot(dfAnn, aes(x=as.factor(Year), y=Violent_crime_rate))+
+  geom_point()+
+  geom_line(group=1)+
+  labs(x="", y="Violent crime rate", title="")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+  
+p4 <- ggplot(dfAnn, aes(x=as.factor(Year), y=Property_crime_rate))+
+  geom_point()+
+  geom_line(group = 1)+
+  labs(x="", y="Property crime rate")+
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.5, hjust=1))
+
+
+ggp_all <- (p1 + p2) / (p3 + p4) +    # Create grid of plots with title
+  plot_annotation(title = "Crime trend in Ann Arbor between 2010 and 2019") & 
+  theme(plot.title = element_text(hjust = 0.5))
+ggp_all
+```
+
+During the past 10 years between 2010 and 2019, Violent crime number and rate in Ann Arbor has an increasing trend while Property crime number and rate has a decreasing trend. Clearly, public safety does not change a lot in the past 10 years.

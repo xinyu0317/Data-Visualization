@@ -1,0 +1,14 @@
+--- 
+title: "Ann Arbor Crime Cases Analysis"
+author: "Yingjie Qu, Xinyu He, Zhihang Xia"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+
+# Introduction
+
+On October 4th, 2021, someone posted a terrifying claim on a Russian website threatening that he would blow away every single woman he saw at the University of Michigan with AR-15. Fortunately, with the effort of the University of Michigan Division of Public Safety and Security and FBI, the out-of-state resident who posted the threat was under arrest. However, this event does provoke our attention to public safety (Emma Ruberg and Weinstein).
+
+Recently, we view a prerecorded MIDAS seminar on shaping a city with open data presented by Ben Wellington on April 19, 2021. In this talk, Ben Wellington discussed how data science could be applied to urban planning and how open data help political decision-making in New York City. From the geography of parking ticket, to restaurant inspection scores to subway and taxi pricing, he discussed best practices for data science in the policy space, and highlighted the various data-driven interactions he had with city agencies that have led to infrastructure and policy changes (Wellington).
+
+Inspired by his talk, we would like to explore in depth about the time patterns and spatial patterns of crimes in Ann Arbor area. 

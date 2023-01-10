@@ -1,0 +1,24 @@
+# Proposal
+
+## Research topic
+Our research topic is mainly focused on the crime rate in Ann Arbor. Through analyzing and correlating data sources, we aim to create an overview of crime incidents and related factors within Ann Arbor community and the related geo-graphical area. This research will help us gain a deeper understanding of the situation of public security in Ann Arbor for the last two years. Besides, it will also give some guidance for the local residents to avoid potential crime and make decisions in daily life, such as choosing a safer living space from different options, or choosing a safer time and way to travel for some particular areas, etc. Based on the data and further analysis, some questions we would like to answer are as follows:
+1. What types of crime are relatively more than others in Ann Arbor?
+2. Is public security in Ann Arbor getting better during these years?
+3. What days in a week are more dangerous than other days?
+4. Which parts of Ann Arbor have more crimes?
+5. At what time of day is a particular crime more frequent?
+
+
+## Data availability
+The first data source we choose is from  [the City of Ann Arbor's Data Catalog website](https://www.a2gov.org/services/data/Pages/default.aspx) .The City of Ann Arbor's Data Catalog website is maintained by the local government of the City of Ann Arbor, collected through the reports of incidents in the police department. The data is available in multiple formats for the convenience of viewers, including CSV, PDF, DOC, RSS, KML, and SHP. We prefer to choose CSV, where the file format is used by spreadsheet, database, and statistical applications. We need to import the CSV file as dataframe through coding to import the data. The data catalog will grow over time as more datasets are added, requested and become available. The update frequency of the data is not specified but the latest update is made on 10/31/2022. If researchers have questions about the data, they can contact the police department, for which the detailed contact information is in the “Agency/Unit” column on the left side of the table.
+Some issues relating to the data quality are known due to sensitivity reasons. To be specific, in the consideration of security problems, some information is omitted from this catalog. Datasets that identify the City's critical infrastructure assets will not be published. Crime statistics will be aggregated to a city-block level and data that is considered personally identifiable information will not be published. Some sensitive data like residents’ personal information will also be removed. 
+
+The second data source we choose is from the FBI UCR website. We choose the data because it is an official website of the United States government and thus the data is highly reliable.
+ [FBI UCR: 2019](https://ucr.fbi.gov/crime-in-the-u.s/2019/crime-in-the-u.s.-2019/tables/table-8/table-8-state-cuts/michigan.xls)
+ [FBI UCR: 2018](https://ucr.fbi.gov/crime-in-the-u.s/2018/crime-in-the-u.s.-2018/tables/table-8/table-8-state-cuts/michigan.xls)
+ [FBI UCR: 2017](https://ucr.fbi.gov/crime-in-the-u.s/2017/crime-in-the-u.s.-2017/tables/table-8/table-8-state-cuts/michigan.xls)
+ [FBI UCR: 2016](https://ucr.fbi.gov/crime-in-the-u.s/2016/crime-in-the-u.s.-2016/tables/table-6/table-6-state-cuts/michigan.xls)
+ [FBI UCR: 2015](https://ucr.fbi.gov/crime-in-the-u.s/2015/crime-in-the-u.s.-2015/tables/table-8/table-8-state-pieces/table_8_offenses_known_to_law_enforcement_michigan_by_city_2015.xls)
+The data is collected through the records in Uniform Crime Reporting (UCR) Program by the FBI. Some issues relating to the data quality are known; for instance, the FBI determines that the agency's data are overreported and thus those data are not included. The data are provided in Excel format, each of which shows the population and the number of different types of crime in different cities in MI for each year. The dataset updates on a yearly basis as a summary of that year, and the latest update is made in 2019. We plan to import the dataset as dataframes in R, and then bind the data of different years together.
+
+
